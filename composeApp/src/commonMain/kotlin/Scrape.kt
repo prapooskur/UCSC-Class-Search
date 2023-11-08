@@ -7,7 +7,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.parameters
 import org.jsoup.Jsoup
 
-const val TAG = "Scraper"
+private const val TAG = "Scraper"
 
 data class Section (
     val name: String,
@@ -84,12 +84,6 @@ suspend fun scrapeWebData(
     val responseBody: String = response.body()
 
     val document = Jsoup.parse(responseBody)
-
-    /*
-    val classList = document.select("div.panel.panel-default.row")
-    val classListII = document.select("div.row")
-    val classListIII = document.select("div.panel.panel-default.row + div.row")
-     */
 
     val responseList = document.select(".panel.panel-default.row").map {
         val locations = it.select(".fa-location-arrow").size
