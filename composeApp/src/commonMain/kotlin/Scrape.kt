@@ -96,7 +96,7 @@ suspend fun scrapeWebData(
             location = it.select(".col-xs-6:nth-child(1)")[1].text().split(": ", limit = 2)[1],
             time = it.select(".col-xs-6:nth-child(2)")[1].text().split(": ").getOrNull(1)?.trim() ?: "Not Found",
             location2 = if (locations > 1) it.select(".col-xs-6:nth-child(3)")[0].text().split(": ", limit = 2)[1] else "Not Found",
-            time2 = if (locations > 1) it.select(".col-xs-6:nth-child(4)")[0].text().split(":").getOrNull(1)?.trim() ?: "Not Found" else "Not Found",
+            time2 = if (locations > 1) it.select(".col-xs-6:nth-child(4)")[0].text().split(": ").getOrNull(1)?.trim() ?: "Not Found" else "Not Found",
             count = it.select(".col-xs-6:nth-child(${if (summer) 5 else 4})")[locations - 1].text(),
             mode = it.select("b")[0].text(),
             summerSession = if (summer) it.select(".col-xs-6:nth-child(4)")[0].text().split(": ")[1] else "Not Found",

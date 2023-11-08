@@ -21,9 +21,6 @@ import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
 
-const val LOCATION_ICON = "location_on.xml"
-const val TIME_ICON = "clock.xml"
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
 fun SectionCard(section: Section) {
@@ -31,15 +28,13 @@ fun SectionCard(section: Section) {
         Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
             SectionTitle(section.name)
             SectionSubtitle(Icons.Default.Person, section.instructor)
-            if (section.location == "Not Found") {
-                SectionSubtitle(painterResource(LOCATION_ICON), section.location2)
-            } else {
-                SectionSubtitle(painterResource(LOCATION_ICON), section.location)
+            SectionSubtitle(painterResource("location_on.xml"), section.location)
+            SectionSubtitle(painterResource("clock.xml"), section.time)
+            if (section.location2 != "Not Found") {
+                SectionSubtitle(painterResource("location_on.xml"), section.location2)
             }
-            if (section.time == "Not Found") {
-                SectionSubtitle(painterResource(TIME_ICON), section.time)
-            } else {
-                SectionSubtitle(painterResource(TIME_ICON), section.time2)
+            if (section.time2 != "Not Found") {
+                SectionSubtitle(painterResource("clock.xml"), section.time2)
             }
             SectionSubtitle(painterResource("group.xml"), section.count)
         }
