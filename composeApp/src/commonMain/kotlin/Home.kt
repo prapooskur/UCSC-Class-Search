@@ -20,6 +20,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import cafe.adriel.voyager.navigator.currentOrThrow
 
 class HomeScreen: Screen {
 
@@ -29,6 +31,8 @@ class HomeScreen: Screen {
         MaterialTheme {
             var searchText by rememberSaveable { mutableStateOf("") }
             var searchActive by rememberSaveable { mutableStateOf(false) }
+
+            val navigator = LocalNavigator.currentOrThrow
 
             Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -43,7 +47,7 @@ class HomeScreen: Screen {
                     onQueryChange = { searchText = it },
                     active = false,
                     onActiveChange = { searchActive = it },
-                    onSearch = { searchActive = false },
+                    onSearch = { navigator.push(ResultsScreen(searchText)) },
                     placeholder = { Text("Search for classes") },
                     leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search icon") },
                 ) {
