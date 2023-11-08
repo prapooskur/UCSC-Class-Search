@@ -1,6 +1,7 @@
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,7 +25,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
 @Composable
 fun App() {
 
-    runBlocking { scrapeWebData() }
+    val classList = runBlocking { scrapeWebData(quantity = 1000) }
     MaterialTheme {
         /*
         var greetingText by remember { mutableStateOf("Hello World!") }
@@ -66,6 +67,15 @@ fun App() {
                 placeholder = { Text("Search for classes") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search icon") },
             ) {}
+
+            LazyColumn {
+                items(classList.size) {
+                    Text(
+                        text = classList[it].name,
+                        modifier = Modifier.align(Alignment.Start)
+                    )
+                }
+            }
         }
     }
 }

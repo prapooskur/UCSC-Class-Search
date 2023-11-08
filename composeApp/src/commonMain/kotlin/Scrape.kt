@@ -9,17 +9,23 @@ import org.jsoup.Jsoup
 
 const val TAG = "Scraper"
 
-data class Listing (
+data class Section (
     val name: String,
     val id: Int,
     val instructor: String,
     val location: String,
     val time: String,
+    val location2: String,
+    val time2: String,
+    val count: String,
+    val mode: String,
+    val summerSession: String,
     val url: String,
     val status: String
 )
 
 suspend fun scrapeWebData(
+    quantity: Int,
     term: String = "2238",
     reg_status: String = "all",
     subject: String = "",
@@ -40,9 +46,7 @@ suspend fun scrapeWebData(
     hybrid: String = "H",
     synch: String = "S",
     person: String = "P"
-): List<Listing> {
-
-    val responseList = mutableListOf<Listing>()
+): List<Section> {
 
     val client = HttpClient(CIO)
 
@@ -71,6 +75,8 @@ suspend fun scrapeWebData(
             append("binds[:hybrid]", hybrid)
             append("binds[:synch]", synch)
             append("binds[:person]", person)
+            append("rec_start","0")
+            append("rec_dur",quantity.toString())
         }
     )
 
@@ -79,15 +85,36 @@ suspend fun scrapeWebData(
 
     val document = Jsoup.parse(responseBody)
 
+    /*
     val classList = document.select("div.panel.panel-default.row")
     val classListII = document.select("div.row")
     val classListIII = document.select("div.panel.panel-default.row + div.row")
+     */
 
-    Logger.d(classList.toString(), tag = TAG)
-    Logger.d(classList.size.toString(), tag = TAG)
-    Logger.d(classListII.size.toString(), tag = TAG)
-    Logger.d(classListIII.size.toString(), tag = TAG)
+    val responseList = document.select(".panel.panel-default.row").map {
+        val locations = it.select(".fa-location-arrow").size
+        val summer = it.select(".fa-calendar").size != 0
 
-    //todo make proper
+        Section(
+            name = it.select("a")[0].text(),
+            id = it.select("div > a")[0].text().toIntOrNull() ?: 0,
+            instructor = it.select(".col-xs-6:nth-child(2)")[0].text().split(": ")[1].replace(",", ", "),
+            location = it.select(".col-xs-6:nth-child(1)")[1].text().split(": ", limit = 2)[1],
+            time = it.select(".col-xs-6:nth-child(2)")[1].text().split(":").getOrNull(1)?.trim() ?: "Not Found",
+            location2 = if (locations > 1) it.select(".col-xs-6:nth-child(3)")[0].text().split(": ", limit = 2)[1] else "Not Found",
+            time2 = if (locations > 1) it.select(".col-xs-6:nth-child(4)")[0].text().split(":").getOrNull(1)?.trim() ?: "Not Found" else "Not Found",
+            count = it.select(".col-xs-6:nth-child(${if (summer) 5 else 4})")[locations - 1].text(),
+            mode = it.select("b")[0].text(),
+            summerSession = if (summer) it.select(".col-xs-6:nth-child(4)")[0].text().split(": ")[1] else "Not Found",
+            url = it.select("a")[0].attr("href"),
+            status = it.select("h2 .sr-only")[0].text()
+        )
+    }
+
+    Logger.d(responseList.size.toString(), tag = TAG)
+    for (section in responseList) {
+        Logger.d(section.toString())
+    }
+
     return responseList
 }
