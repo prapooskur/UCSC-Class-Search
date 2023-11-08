@@ -32,15 +32,29 @@ data class ResultsScreen(val input: String): Screen {
 
         Logger.d(input.uppercase(),tag = TAG)
         LaunchedEffect(Unit) {
+            val isSubject = subjectList.contains(input.uppercase())
+            val isCode = input.matches(Regex("^\\d$|^\\d{2}[a-zA-Z]?$|^\\d{3}[a-zA-Z]?$"))
+
+            val isBoth = (input.length <= 8 && subjectList.contains(
+                input.uppercase().substringBefore(" ")
+            ) && input.substringAfter(" ")
+                .matches(Regex("^\\d$|^\\d{2}[a-zA-Z]?$|^\\d{3}[a-zA-Z]?$")))
+
             try {
-                classList = if (subjectList.contains(input.uppercase())) {
+                classList = if (isBoth) {
+                    scrapeWebData(
+                        quantity = QUANTITY,
+                        subject = input.uppercase().substringBefore(" "),
+                        catalog_nbr = input.substringAfter(" ")
+                    )
+                }
+                else if (isSubject) {
                     scrapeWebData(quantity = QUANTITY, subject = input.uppercase())
-                } else if (input.matches(Regex("^\\d$|^\\d{2}[a-zA-Z]?$|^\\d{3}[a-zA-Z]?$"))) {
+                } else if (isCode) {
                     scrapeWebData(quantity = QUANTITY, catalog_nbr = input.uppercase())
                 } else {
                     scrapeWebData(quantity = QUANTITY, title = input)
                 }
-
             } catch (e: Exception) {
                 Logger.d("Exception caught: $e", tag = TAG)
             }
