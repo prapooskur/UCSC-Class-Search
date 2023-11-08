@@ -1,5 +1,5 @@
-import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.compose.ExperimentalComposeLibrary
+import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -50,6 +50,17 @@ kotlin {
 
             // logging
             implementation("co.touchlab:kermit:2.0.2")
+
+            // navigation
+            val voyagerVersion = "1.0.0-rc10"
+            // Navigator
+            implementation("cafe.adriel.voyager:voyager-navigator:$voyagerVersion")
+            // BottomSheetNavigator
+            implementation("cafe.adriel.voyager:voyager-bottom-sheet-navigator:$voyagerVersion")
+            // TabNavigator
+            implementation("cafe.adriel.voyager:voyager-tab-navigator:$voyagerVersion")
+            // Transitions
+            implementation("cafe.adriel.voyager:voyager-transitions:$voyagerVersion")
         }
     }
 }
