@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalUriHandler
+import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,8 +26,9 @@ import ui.theme.Shapes
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
-fun SectionCard(section: Section) {
-    Card(onClick = {},modifier = Modifier.padding(6.dp), shape = Shapes.small) {
+fun SectionCard(section: Section, uriHandler: UriHandler) {
+    val uri = "https://pisa.ucsc.edu/class_search/"+section.url
+    Card(onClick = { uriHandler.openUri(uri) },modifier = Modifier.padding(6.dp), shape = Shapes.small) {
         Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
             SectionTitle(section.name)
             SectionSubtitle(Icons.Default.Person, section.instructor)

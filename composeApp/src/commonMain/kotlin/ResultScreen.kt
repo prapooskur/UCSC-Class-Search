@@ -1,21 +1,13 @@
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.screen.Screen
@@ -37,6 +29,9 @@ data class ResultsScreen(
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+
+        val uriHandler = LocalUriHandler.current
+
 
         Logger.d(asynch+hybrid+synch+person+term, tag = TAG)
 
@@ -110,7 +105,7 @@ data class ResultsScreen(
             if (dataLoadedState) {
                 if (classList.isNotEmpty()) {
                     LazyColumn(
-                        modifier = Modifier.widthIn(max=900.dp)
+                        modifier = Modifier.widthIn(max=800.dp)
                     ) {
                         item {
                             Button(
@@ -119,7 +114,7 @@ data class ResultsScreen(
                             )
                         }
                         items(classList.size) {
-                            SectionCard(classList[it])
+                            SectionCard(classList[it], uriHandler)
                         }
                     }
                 } else {
