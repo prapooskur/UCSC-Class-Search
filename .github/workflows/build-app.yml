@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
+
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
@@ -121,13 +121,13 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: msi-build
-        path: composeApp/build/compose/binaries/main/msi/com.pras.pisasearch_1.0.0-1_amd64.msi
+        path: composeApp/build/compose/binaries/main/msi/com.pras.pisasearch-1.0.0.msi
 
     - name: Upload exe as artifact
       uses: actions/upload-artifact@v3
       with:
         name: exe-build
-        path: composeApp/build/compose/binaries/main/exe/com.pras.pisasearch_1.0.0-1_amd64.exe
+        path: composeApp/build/compose/binaries/main/exe/com.pras.pisasearch-1.0.0.exe
 
   build-macos:
     runs-on: macos-latest
