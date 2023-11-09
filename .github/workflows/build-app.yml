@@ -147,7 +147,7 @@ jobs:
 
     - name: Build app
       working-directory: .
-      run: ./gradlew packageReleaseDmg
+      run: ./gradlew packageDistributionForCurrentOS
 
     - name: Upload dmg as artifact
       uses: actions/upload-artifact@v3
