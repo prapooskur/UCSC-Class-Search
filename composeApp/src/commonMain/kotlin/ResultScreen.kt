@@ -104,17 +104,17 @@ data class ResultsScreen(
             dataLoadedState = true
         }
 
-        Box (modifier = Modifier.padding(8.dp).fillMaxSize(), contentAlignment = Alignment.TopCenter) {
+        Box (modifier = Modifier.padding(horizontal = 8.dp).fillMaxSize(), contentAlignment = Alignment.TopCenter) {
             if (dataLoadedState) {
                 if (classList.isNotEmpty()) {
-                    LazyColumn(
-                        modifier = Modifier.widthIn(max=800.dp)
-                    ) {
+                    LazyColumn(modifier = Modifier.widthIn(max=800.dp), horizontalAlignment = Alignment.CenterHorizontally) {
                         item {
-                            Button(
-                                onClick = { navigator.pop() },
-                                content = { Text("Go back") },
-                            )
+                            Box(Modifier.fillMaxWidth().align(Alignment.CenterStart)) {
+                                Button(
+                                    onClick = { navigator.pop() },
+                                    content = { Text("Go back") },
+                                )
+                            }
                         }
                         items(classList.size) {
                             SectionCard(classList[it], uriHandler)

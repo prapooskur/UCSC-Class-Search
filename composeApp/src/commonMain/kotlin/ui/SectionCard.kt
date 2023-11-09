@@ -1,10 +1,7 @@
 package ui
 
 import Section
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Card
@@ -27,7 +24,7 @@ import ui.theme.Shapes
 @Composable
 fun SectionCard(section: Section, uriHandler: UriHandler) {
     val uri = "https://pisa.ucsc.edu/class_search/"+section.url
-    Card(onClick = { uriHandler.openUri(uri) },modifier = Modifier.padding(6.dp), shape = Shapes.small) {
+    Card(onClick = { uriHandler.openUri(uri) },modifier = Modifier.padding(6.dp).widthIn(max=800.dp), shape = Shapes.small) {
         Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
             SectionTitle(section.name)
             SectionSubtitle(Icons.Default.Person, section.instructor)
