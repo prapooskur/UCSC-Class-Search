@@ -17,7 +17,7 @@ import co.touchlab.kermit.Logger
 import ui.SectionCard
 
 private const val TAG = "ResultsScreen"
-const val QUANTITY = 25
+const val QUANTITY = 100
 data class ResultsScreen(
     val input: String,
     val term: String = "2238",
@@ -44,13 +44,16 @@ data class ResultsScreen(
 
         Logger.d(input.uppercase(),tag = TAG)
         LaunchedEffect(Unit) {
+
+            val courseRegex = Regex("^\\d[a-zA-Z]?$|^\\d{2}[a-zA-Z]?$|^\\d{3}[a-zA-Z]?$")
+
             val isSubject = subjectList.contains(input.uppercase())
-            val isCode = input.matches(Regex("^\\d$|^\\d{2}[a-zA-Z]?$|^\\d{3}[a-zA-Z]?$"))
+            val isCode = input.matches(courseRegex)
 
             val isBoth = (input.length <= 8 && subjectList.contains(
                 input.uppercase().substringBefore(" ")
             ) && input.substringAfter(" ")
-                .matches(Regex("^\\d$|^\\d{2}[a-zA-Z]?$|^\\d{3}[a-zA-Z]?$")))
+                .matches(courseRegex))
 
             try {
                 classList = if (isBoth) {

@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.platform.UriHandler
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -32,10 +31,18 @@ fun SectionCard(section: Section, uriHandler: UriHandler) {
         Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
             SectionTitle(section.name)
             SectionSubtitle(Icons.Default.Person, section.instructor)
-            SectionSubtitle(painterResource("location_on.xml"), section.location)
+            if (section.location.contains("Online") || section.location.contains("Remote Instruction")) {
+                SectionSubtitle(painterResource("videocam.xml"), section.location)
+            } else {
+                SectionSubtitle(painterResource("location_on.xml"), section.location)
+            }
             SectionSubtitle(painterResource("clock.xml"), section.time)
             if (section.location2 != "Not Found") {
-                SectionSubtitle(painterResource("location_on.xml"), section.location2)
+                if (section.location2.contains("Online") || section.location2.contains("Remote Instruction")) {
+                    SectionSubtitle(painterResource("videocam.xml"), section.location2)
+                } else {
+                    SectionSubtitle(painterResource("location_on.xml"), section.location2)
+                }
             }
             if (section.time2 != "Not Found") {
                 SectionSubtitle(painterResource("clock.xml"), section.time2)

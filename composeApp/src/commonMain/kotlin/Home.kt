@@ -33,7 +33,7 @@ class HomeScreen: Screen {
 
         val navigator = LocalNavigator.currentOrThrow
 
-        val termChosen = rememberSaveable { mutableStateOf("Fall 2023") }
+        val termChosen = rememberSaveable { mutableStateOf("Winter 2024") }
 
         val termMap = mapOf(
             "Winter 2024" to "2240",
