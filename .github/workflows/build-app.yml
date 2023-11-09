@@ -147,12 +147,12 @@ jobs:
 
     - name: Build app
       working-directory: .
-      run: ./gradlew packageDistributionForCurrentOS
+      run: ./gradlew packageReleaseDmg
 
     - name: Upload dmg as artifact
       uses: actions/upload-artifact@v3
       with:
         name: dmg-build
-        path: composeApp/build/compose/binaries/main/exe/com.pras.pisasearch_1.0.0-1_amd64.dmg
+        path: composeApp/build/compose/binaries/main/dmg/com.pras.pisasearch-1.0.0.dmg
 
 
