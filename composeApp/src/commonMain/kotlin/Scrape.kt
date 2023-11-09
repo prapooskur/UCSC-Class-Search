@@ -71,10 +71,10 @@ suspend fun scrapeWebData(
             append("binds[:days]", days)
             append("binds[:times]", times)
             append("binds[:acad_career]", acad_career)
-            append("binds[:asynch]", asynch)
-            append("binds[:hybrid]", hybrid)
-            append("binds[:synch]", synch)
-            append("binds[:person]", person)
+            if (asynch.isNotBlank()) { append("binds[:asynch]", asynch) }
+            if (hybrid.isNotBlank()) { append("binds[:hybrid]", hybrid) }
+            if (synch.isNotBlank()) { append("binds[:synch]", synch) }
+            if (person.isNotBlank()) { append("binds[:person]", person) }
             append("rec_start","0")
             append("rec_dur",quantity.toString())
         }

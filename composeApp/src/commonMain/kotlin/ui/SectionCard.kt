@@ -20,11 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import org.jetbrains.compose.resources.painterResource
+import ui.theme.Shapes
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalResourceApi::class)
 @Composable
 fun SectionCard(section: Section) {
-    Card(onClick = {},modifier = Modifier.padding(6.dp)) {
+    Card(onClick = {},modifier = Modifier.padding(6.dp), shape = Shapes.small) {
         Column(modifier = Modifier.fillMaxSize().padding(8.dp)) {
             SectionTitle(section.name)
             SectionSubtitle(Icons.Default.Person, section.instructor)

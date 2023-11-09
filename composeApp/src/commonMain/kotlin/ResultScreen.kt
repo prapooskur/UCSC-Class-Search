@@ -3,6 +3,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -25,15 +26,25 @@ import ui.SectionCard
 
 private const val TAG = "ResultsScreen"
 const val QUANTITY = 25
-data class ResultsScreen(val input: String): Screen {
+data class ResultsScreen(
+    val input: String,
+    val term: String = "2238",
+    val asynch: String = "A",
+    val hybrid: String = "H",
+    val synch: String = "S",
+    val person: String = "P"
+): Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
+
+        Logger.d(asynch+hybrid+synch+person+term, tag = TAG)
 
         var dataLoadedState by remember { mutableStateOf(false) }
         var classList by remember { mutableStateOf(listOf<Section>()) }
 
         val subjectList = setOf("APLX", "AM", "ARBC", "ART", "ARTG", "ASTR", "BIOC", "BIOL", "BIOE", "BME", "CRSN", "CHEM", "CHIN", "CSP", "CLNI", "CMMU", "CMPM", "CSE", "COWL", "CRES", "CRWN", "DANM", "EART", "ECON", "EDUC", "ECE", "ESCI", "ENVS", "FMST", "FILM", "FREN", "GAME", "GERM", "GCH", "GRAD", "GREE", "HEBR", "HIS", "HAVC", "HISC", "HCI", "HUMN", "ITAL", "JAPN", "JRLC", "KRSG", "LAAD", "LATN", "LALS", "LGST", "LING", "LIT", "MATH", "MERR", "METX", "MUSC", "NLP", "OAKS", "OCEA", "PERS", "PHIL", "PBS", "PHYE", "PHYS", "POLI", "PRTR", "PORT", "PSYC", "SCIC", "SOCD", "SOCY", "SPAN", "SPHS", "STAT", "STEV", "TIM", "THEA", "UCDC", "VAST", "WRIT")
+
 
 
         Logger.d(input.uppercase(),tag = TAG)
@@ -50,16 +61,44 @@ data class ResultsScreen(val input: String): Screen {
                 classList = if (isBoth) {
                     scrapeWebData(
                         quantity = QUANTITY,
+                        term = term,
                         subject = input.uppercase().substringBefore(" "),
-                        catalog_nbr = input.substringAfter(" ")
+                        catalog_nbr = input.substringAfter(" "),
+                        asynch = asynch,
+                        hybrid = hybrid,
+                        synch = synch,
+                        person = person
                     )
-                }
-                else if (isSubject) {
-                    scrapeWebData(quantity = QUANTITY, subject = input.uppercase())
+                } else if (isSubject) {
+                    scrapeWebData(
+                        quantity = QUANTITY,
+                        term = term,
+                        subject = input.uppercase(),
+                        asynch = asynch,
+                        hybrid = hybrid,
+                        synch = synch,
+                        person = person
+                    )
                 } else if (isCode) {
-                    scrapeWebData(quantity = QUANTITY, catalog_nbr = input.uppercase())
+                    scrapeWebData(
+                        quantity = QUANTITY,
+                        term = term,
+                        catalog_nbr = input.uppercase(),
+                        asynch = asynch,
+                        hybrid = hybrid,
+                        synch = synch,
+                        person = person
+                    )
                 } else {
-                    scrapeWebData(quantity = QUANTITY, title = input)
+                    scrapeWebData(
+                        quantity = QUANTITY,
+                        term = term,
+                        title = input,
+                        asynch = asynch,
+                        hybrid = hybrid,
+                        synch = synch,
+                        person = person
+                    )
                 }
             } catch (e: Exception) {
                 Logger.d("Exception caught: $e", tag = TAG)
@@ -70,9 +109,14 @@ data class ResultsScreen(val input: String): Screen {
         Box (modifier = Modifier.padding(8.dp).fillMaxSize(), contentAlignment = Alignment.TopCenter) {
             if (dataLoadedState) {
                 if (classList.isNotEmpty()) {
-                    LazyColumn() {
+                    LazyColumn(
+                        modifier = Modifier.widthIn(max=900.dp)
+                    ) {
                         item {
-                            Button(onClick = { navigator.pop() }, content = { Text("Go back") })
+                            Button(
+                                onClick = { navigator.pop() },
+                                content = { Text("Go back") },
+                            )
                         }
                         items(classList.size) {
                             SectionCard(classList[it])
@@ -89,7 +133,7 @@ data class ResultsScreen(val input: String): Screen {
 
                 }
             } else {
-                Box() {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                     CircularProgressIndicator()
                 }
             }
