@@ -20,6 +20,7 @@ private const val TAG = "ResultsScreen"
 const val QUANTITY = 100
 data class ResultsScreen(
     val input: String,
+    val open: Boolean,
     val term: String = "2238",
     val asynch: String = "A",
     val hybrid: String = "H",
@@ -60,6 +61,7 @@ data class ResultsScreen(
                     scrapeWebData(
                         quantity = QUANTITY,
                         term = term,
+                        reg_status = if (open) { "O" } else { "all" },
                         subject = input.uppercase().substringBefore(" "),
                         catalog_nbr = input.substringAfter(" "),
                         asynch = asynch,
@@ -71,6 +73,7 @@ data class ResultsScreen(
                     scrapeWebData(
                         quantity = QUANTITY,
                         term = term,
+                        reg_status = if (open) { "O" } else { "all" },
                         subject = input.uppercase(),
                         asynch = asynch,
                         hybrid = hybrid,
@@ -81,6 +84,7 @@ data class ResultsScreen(
                     scrapeWebData(
                         quantity = QUANTITY,
                         term = term,
+                        reg_status = if (open) { "O" } else { "all" },
                         catalog_nbr = input.uppercase(),
                         asynch = asynch,
                         hybrid = hybrid,
@@ -91,6 +95,7 @@ data class ResultsScreen(
                     scrapeWebData(
                         quantity = QUANTITY,
                         term = term,
+                        reg_status = if (open) { "O" } else { "all" },
                         title = input,
                         asynch = asynch,
                         hybrid = hybrid,

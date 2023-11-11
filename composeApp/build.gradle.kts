@@ -37,8 +37,6 @@ kotlin {
             @OptIn(ExperimentalComposeLibrary::class)
             implementation(compose.components.resources)
 
-            implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.1")
-
             val ktorVersion = "2.3.6"
             implementation("io.ktor:ktor-client-core:$ktorVersion")
             implementation("io.ktor:ktor-client-cio:$ktorVersion")

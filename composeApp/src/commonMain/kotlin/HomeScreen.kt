@@ -31,6 +31,8 @@ class HomeScreen: Screen {
         val searchSynchOnline = rememberSaveable { mutableStateOf(true) }
         val searchInPerson = rememberSaveable { mutableStateOf(true) }
 
+        val searchOpen = rememberSaveable { mutableStateOf(false) }
+
         val navigator = LocalNavigator.currentOrThrow
 
         val termChosen = rememberSaveable { mutableStateOf("Winter 2024") }
@@ -43,7 +45,7 @@ class HomeScreen: Screen {
             "Fall 2022" to "2228"
         )
 
-        Column(Modifier.fillMaxSize().offset(y = (-25).dp), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center, modifier = Modifier.fillMaxSize().offset(y = (-25).dp)) {
 
             Text(
                 text =  "UCSC Class Search",
@@ -61,6 +63,7 @@ class HomeScreen: Screen {
                     navigator.push(
                         ResultsScreen(
                             input = searchText,
+                            open = searchOpen.value,
                             term = termMap[termChosen.value] ?: "2238",
                             asynch = if (searchAsyncOnline.value) "A" else "",
                             hybrid = if (searchHybrid.value) "H" else "",
@@ -75,6 +78,14 @@ class HomeScreen: Screen {
             ) {}
 
             TermChooser(termChosen)
+
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("")
+                Text("All")
+                RadioButton(selected = !searchOpen.value, onClick = { searchOpen.value = false })
+                Text("Open")
+                RadioButton(selected = searchOpen.value, onClick = { searchOpen.value = true })
+            }
 
             Column(modifier = Modifier.offset(x= (-72).dp)) {
                 TimeCheckbox("Asynchronous", searchAsyncOnline)
