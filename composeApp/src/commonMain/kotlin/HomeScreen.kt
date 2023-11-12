@@ -36,6 +36,7 @@ class HomeScreen: Screen {
         val navigator = LocalNavigator.currentOrThrow
 
         val termChosen = rememberSaveable { mutableStateOf("Winter 2024") }
+        val geChosen = rememberSaveable { mutableStateOf("") }
 
         val termMap = mapOf(
             "Winter 2024" to "2240",
@@ -65,6 +66,7 @@ class HomeScreen: Screen {
                             input = searchText,
                             open = searchOpen.value,
                             term = termMap[termChosen.value] ?: "2238",
+                            ge = geChosen.value,
                             asynch = if (searchAsyncOnline.value) "A" else "",
                             hybrid = if (searchHybrid.value) "H" else "",
                             synch = if (searchSynchOnline.value) "S" else "",
@@ -74,17 +76,19 @@ class HomeScreen: Screen {
                 },
                 placeholder = { Text("Search for classes") },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search icon") },
-                modifier = Modifier.padding(8.dp)
-            ) {}
+                modifier = Modifier.padding(12.dp)
+            ) { /* do nothing */ }
 
-            TermChooser(termChosen)
+            Row(Modifier.widthIn(max = 350.dp)) {
+                TermChooser(termChosen)
+                GEChooser(geChosen)
+            }
 
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.offset(x=(-35).dp)) {
                 Text("Status: ")
 
                 RadioButton(selected = !searchOpen.value, onClick = { searchOpen.value = false })
                 Text("All")
-
 
                 RadioButton(selected = searchOpen.value, onClick = { searchOpen.value = true })
                 Text("Open")
@@ -122,6 +126,7 @@ fun TermChooser(termChosen: MutableState<String>) {
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
+        modifier = Modifier.widthIn(max=200.dp).padding(end=25.dp)
     ) {
         TextField(
             // The `menuAnchor` modifier must be passed to the text field for correctness.
@@ -142,6 +147,46 @@ fun TermChooser(termChosen: MutableState<String>) {
                     text = { Text(selectionOption) },
                     onClick = {
                         termChosen.value = selectionOption
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun GEChooser(geChosen: MutableState<String>) {
+
+    val options = listOf("","CC","ER","IM","MF","SI","SR","TA","PE-E","PE-H","PE-T","PR-E","PR-C","PR-S","C")
+    var expanded by remember { mutableStateOf(false) }
+// We want to react on tap/press on TextField to show menu
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded },
+        modifier = Modifier.widthIn(max=175.dp)
+    ) {
+        TextField(
+            // The `menuAnchor` modifier must be passed to the text field for correctness.
+            modifier = Modifier.menuAnchor(),
+            readOnly = true,
+            value = geChosen.value,
+            onValueChange = {},
+            label = { Text("GE") },
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+        )
+        ExposedDropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+        ) {
+            options.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(selectionOption) },
+                    onClick = {
+                        geChosen.value = selectionOption
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
