@@ -60,7 +60,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: app-build
-          path: composeApp/release/composeapp-release.apk
+          path: composeApp/release/composeApp-release.apk
 
 
   #./gradlew packageDistributionForCurrentOS
