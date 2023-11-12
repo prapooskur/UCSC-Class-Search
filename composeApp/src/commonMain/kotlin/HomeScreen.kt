@@ -79,12 +79,16 @@ class HomeScreen: Screen {
 
             TermChooser(termChosen)
 
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text("")
-                Text("All")
+            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.offset(x=(-35).dp)) {
+                Text("Status: ")
+
                 RadioButton(selected = !searchOpen.value, onClick = { searchOpen.value = false })
-                Text("Open")
+                Text("All")
+
+
                 RadioButton(selected = searchOpen.value, onClick = { searchOpen.value = true })
+                Text("Open")
+
             }
 
             Column(modifier = Modifier.offset(x= (-72).dp)) {
